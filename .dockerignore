@@ -1,0 +1,8 @@
+node_modules
+.git
+.output
+.github
+*.log
+dist
+.agents
+C:\Users\prasanna\.gemini\antigravity\brain
