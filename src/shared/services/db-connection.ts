@@ -1,7 +1,10 @@
 import mongoose from "mongoose";
 
-const MONGODB_URI = process.env.MONGODB_URI || process.env.MONGO_URI || "mongodb://localhost:27017/community-hero";
+const MONGODB_URI = process.env.MONGODB_URI || process.env.MONGO_URI;
 
+if (!MONGODB_URI) {
+  throw new Error("Missing MongoDB connection string. Set MONGO_URI or MONGODB_URI.");
+}
 interface MongooseCache {
   conn: typeof mongoose | null;
   promise: Promise<typeof mongoose> | null;
