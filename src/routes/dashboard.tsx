@@ -8,10 +8,15 @@ import { NotificationsPanel } from "@/features/dashboard/components/notification
 import { AICopilot } from "@/features/ai/components/ai-copilot";
 import { DemoPresenterBar } from "@/features/diagnostics/components/demo-presenter-bar";
 import { cn } from "@/lib/utils";
+import { getAuthSession } from "@/shared/functions/auth-rpc";
 
 export const Route = createFileRoute("/dashboard")({
-  beforeLoad: ({ location }) => {
-    const { isAuthenticated } = useAuthStore.getState();
+  beforeLoad: async ({ location }) => {
+    // This executes on both client and server.
+    // On the server, getAuthSession reads the HTTP-only cookie.
+    // On the client, it fetches via an RPC call if necessary.
+    const { isAuthenticated, user } = await getAuthSession();
+    
     if (!isAuthenticated) {
       throw redirect({
         to: "/login",
@@ -19,6 +24,11 @@ export const Route = createFileRoute("/dashboard")({
           redirect: location.href,
         },
       });
+    }
+
+    // Sync client state if running on the client
+    if (typeof window !== "undefined" && user) {
+      useAuthStore.getState().login(user);
     }
   },
   component: DashboardLayout,

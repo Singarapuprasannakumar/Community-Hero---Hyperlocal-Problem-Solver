@@ -131,20 +131,21 @@ function RootComponent() {
   const isLogin = pathname.startsWith("/login");
   const isAuthPage = isDashboard || isLogin;
 
-  const { token, login, logout } = useAuthStore();
+  const { isAuthenticated, login, logout } = useAuthStore();
   
   useEffect(() => {
-    if (token) {
-      authService.validateSession(token)
-        .then(response => {
-          login(response.user, token);
-        })
-        .catch(() => {
-          // If session is invalid/expired, clear state
+    // Attempt to hydrate/validate session from cookies via API on mount
+    authService.validateSession()
+      .then(response => {
+        login(response.user);
+      })
+      .catch(() => {
+        // If session is invalid/expired, clear state
+        if (isAuthenticated) {
           logout();
-        });
-    }
-  }, []);
+        }
+      });
+  }, [isAuthenticated, login, logout]);
 
   const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID ?? "";
 

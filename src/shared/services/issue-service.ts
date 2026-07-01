@@ -94,6 +94,7 @@ export const issueService = {
       headers: {
         "Accept": "application/json",
       },
+      credentials: "include",
     });
     if (!res.ok) {
       throw new Error(`Failed to fetch issues: ${res.statusText}`);
@@ -106,6 +107,7 @@ export const issueService = {
       headers: {
         "Accept": "application/json",
       },
+      credentials: "include",
     });
     if (!res.ok) {
       throw new Error(`Failed to fetch issue: ${res.statusText}`);
@@ -128,6 +130,7 @@ export const issueService = {
         "Content-Type": "application/json",
         "Accept": "application/json",
       },
+      credentials: "include",
       body: JSON.stringify(issue),
     });
     if (!res.ok) {
@@ -144,6 +147,7 @@ export const issueService = {
         "Content-Type": "application/json",
         "Accept": "application/json",
       },
+      credentials: "include",
       body: JSON.stringify(updates),
     });
     if (!res.ok) {
@@ -159,6 +163,7 @@ export const issueService = {
       headers: {
         "Accept": "application/json",
       },
+      credentials: "include",
     });
     if (!res.ok) {
       const errorData = await res.json().catch(() => ({}));

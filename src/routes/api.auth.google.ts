@@ -93,7 +93,7 @@ export const Route = createFileRoute("/api/auth/google")({
             { expiresIn: JWT_EXPIRES_IN }
           );
 
-          // ── 5. Return user profile ─────────────────────────────────────
+          // ── 5. Set Cookie & Return user profile ─────────────────────────
           const userProfile = {
             id: user._id.toString(),
             name: user.name,
@@ -121,9 +121,16 @@ export const Route = createFileRoute("/api/auth/google")({
             privacySettings: { showLocation: true, showXP: true, anonymousReporting: false },
           };
 
-          return new Response(JSON.stringify({ user: userProfile, token }), {
+          const isProduction = process.env.NODE_ENV === "production";
+          const maxAgeSeconds = 7 * 24 * 60 * 60; // 7 days
+          const cookieStr = `auth_token=${token}; HttpOnly; ${isProduction ? 'Secure; ' : ''}SameSite=Lax; Path=/; Max-Age=${maxAgeSeconds}`;
+
+          return new Response(JSON.stringify({ user: userProfile }), {
             status: 200,
-            headers: { "Content-Type": "application/json" },
+            headers: { 
+              "Content-Type": "application/json",
+              "Set-Cookie": cookieStr
+            },
           });
         } catch (err: any) {
           console.error("[auth/google] Database error:", err.message);

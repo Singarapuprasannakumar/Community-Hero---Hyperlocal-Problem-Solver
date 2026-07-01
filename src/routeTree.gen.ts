@@ -35,6 +35,7 @@ import { Route as DashboardIssuesCreateRouteImport } from './routes/dashboard/is
 import { Route as DashboardIssuesIssueIdRouteImport } from './routes/dashboard/issues.$issueId'
 import { Route as ApiIssuesIssueIdRouteImport } from './routes/api.issues.$issueId'
 import { Route as ApiAuthMeRouteImport } from './routes/api.auth.me'
+import { Route as ApiAuthLogoutRouteImport } from './routes/api.auth.logout'
 import { Route as ApiAuthGoogleRouteImport } from './routes/api.auth.google'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
@@ -167,6 +168,11 @@ const ApiAuthMeRoute = ApiAuthMeRouteImport.update({
   path: '/api/auth/me',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiAuthLogoutRoute = ApiAuthLogoutRouteImport.update({
+  id: '/api/auth/logout',
+  path: '/api/auth/logout',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiAuthGoogleRoute = ApiAuthGoogleRouteImport.update({
   id: '/api/auth/google',
   path: '/api/auth/google',
@@ -196,6 +202,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/settings': typeof DashboardSettingsRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/api/auth/google': typeof ApiAuthGoogleRoute
+  '/api/auth/logout': typeof ApiAuthLogoutRoute
   '/api/auth/me': typeof ApiAuthMeRoute
   '/api/issues/$issueId': typeof ApiIssuesIssueIdRoute
   '/dashboard/issues/$issueId': typeof DashboardIssuesIssueIdRoute
@@ -224,6 +231,7 @@ export interface FileRoutesByTo {
   '/dashboard/settings': typeof DashboardSettingsRoute
   '/dashboard': typeof DashboardIndexRoute
   '/api/auth/google': typeof ApiAuthGoogleRoute
+  '/api/auth/logout': typeof ApiAuthLogoutRoute
   '/api/auth/me': typeof ApiAuthMeRoute
   '/api/issues/$issueId': typeof ApiIssuesIssueIdRoute
   '/dashboard/issues/$issueId': typeof DashboardIssuesIssueIdRoute
@@ -254,6 +262,7 @@ export interface FileRoutesById {
   '/dashboard/settings': typeof DashboardSettingsRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/api/auth/google': typeof ApiAuthGoogleRoute
+  '/api/auth/logout': typeof ApiAuthLogoutRoute
   '/api/auth/me': typeof ApiAuthMeRoute
   '/api/issues/$issueId': typeof ApiIssuesIssueIdRoute
   '/dashboard/issues/$issueId': typeof DashboardIssuesIssueIdRoute
@@ -285,6 +294,7 @@ export interface FileRouteTypes {
     | '/dashboard/settings'
     | '/dashboard/'
     | '/api/auth/google'
+    | '/api/auth/logout'
     | '/api/auth/me'
     | '/api/issues/$issueId'
     | '/dashboard/issues/$issueId'
@@ -313,6 +323,7 @@ export interface FileRouteTypes {
     | '/dashboard/settings'
     | '/dashboard'
     | '/api/auth/google'
+    | '/api/auth/logout'
     | '/api/auth/me'
     | '/api/issues/$issueId'
     | '/dashboard/issues/$issueId'
@@ -342,6 +353,7 @@ export interface FileRouteTypes {
     | '/dashboard/settings'
     | '/dashboard/'
     | '/api/auth/google'
+    | '/api/auth/logout'
     | '/api/auth/me'
     | '/api/issues/$issueId'
     | '/dashboard/issues/$issueId'
@@ -365,6 +377,7 @@ export interface RootRouteChildren {
   ApiHealthRoute: typeof ApiHealthRoute
   ApiIssuesRoute: typeof ApiIssuesRouteWithChildren
   ApiAuthGoogleRoute: typeof ApiAuthGoogleRoute
+  ApiAuthLogoutRoute: typeof ApiAuthLogoutRoute
   ApiAuthMeRoute: typeof ApiAuthMeRoute
 }
 
@@ -552,6 +565,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAuthMeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/auth/logout': {
+      id: '/api/auth/logout'
+      path: '/api/auth/logout'
+      fullPath: '/api/auth/logout'
+      preLoaderRoute: typeof ApiAuthLogoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/auth/google': {
       id: '/api/auth/google'
       path: '/api/auth/google'
@@ -620,6 +640,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiHealthRoute: ApiHealthRoute,
   ApiIssuesRoute: ApiIssuesRouteWithChildren,
   ApiAuthGoogleRoute: ApiAuthGoogleRoute,
+  ApiAuthLogoutRoute: ApiAuthLogoutRoute,
   ApiAuthMeRoute: ApiAuthMeRoute,
 }
 export const routeTree = rootRouteImport

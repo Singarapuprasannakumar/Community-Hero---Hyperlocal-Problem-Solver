@@ -90,10 +90,11 @@ export const authService = {
    * Exchange a Google ID token (from GIS popup) for an app session.
    * Calls POST /api/auth/google → verifies with google-auth-library → finds/creates user.
    */
-  async googleOAuth(credential: string): Promise<{ user: UserProfile; token: string }> {
+  async googleOAuth(credential: string): Promise<{ user: UserProfile }> {
     const res = await fetch("/api/auth/google", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      credentials: "include",
       body: JSON.stringify({ credential }),
     });
     if (!res.ok) {
@@ -103,14 +104,23 @@ export const authService = {
     return res.json();
   },
 
-  async validateSession(token: string): Promise<{ user: UserProfile }> {
+  async validateSession(): Promise<{ user: UserProfile }> {
     const res = await fetch("/api/auth/me", {
-      headers: { "Authorization": `Bearer ${token}` }
+      method: "GET",
+      // Include cookies in the request
+      credentials: "include",
     });
     if (!res.ok) {
       throw new Error("Invalid session");
     }
     return res.json();
+  },
+
+  async logout(): Promise<void> {
+    await fetch("/api/auth/logout", {
+      method: "POST",
+      credentials: "include",
+    });
   },
 
   async login(email: string, password?: string): Promise<{ user: UserProfile; token: string }> {

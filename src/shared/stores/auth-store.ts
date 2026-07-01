@@ -4,11 +4,10 @@ import { UserProfile, UserRole } from "../types/user-types";
 
 interface AuthState {
   user: UserProfile | null;
-  token: string | null;
   isAuthenticated: boolean;
   isLoading: boolean;
   error: string | null;
-  login: (userProfile: UserProfile, token: string) => void;
+  login: (userProfile: UserProfile) => void;
   logout: () => void;
   updateProfile: (profile: Partial<UserProfile>) => void;
   setLoading: (loading: boolean) => void;
@@ -19,21 +18,18 @@ export const useAuthStore = create<AuthState>()(
   persist(
     (set) => ({
       user: null,
-      token: null,
       isAuthenticated: false,
       isLoading: false,
       error: null,
-      login: (userProfile, token) =>
+      login: (userProfile) =>
         set({
           user: userProfile,
-          token,
           isAuthenticated: true,
           error: null,
         }),
       logout: () =>
         set({
           user: null,
-          token: null,
           isAuthenticated: false,
           error: null,
         }),
@@ -48,7 +44,6 @@ export const useAuthStore = create<AuthState>()(
       name: "community-hero-auth-storage",
       partialize: (state) => ({
         user: state.user,
-        token: state.token,
         isAuthenticated: state.isAuthenticated,
       }),
     }
